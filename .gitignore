@@ -34,3 +34,6 @@
 
 # Build directory
 build/
+cmake-build-debug/
+.idea/
+docs/doc_doxygen/
