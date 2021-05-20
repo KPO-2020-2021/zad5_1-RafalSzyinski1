@@ -36,3 +36,13 @@ void Drone::move(const std::vector<double>& vec)
         i.move(vec);
 }
 
+const std::vector<Propeller>& Drone::getPropellers() const
+{
+    return propellers;
+}
+
+std::vector<double> Drone::getSize() const
+{
+    return std::vector<double>({width, length, height});
+}
+

@@ -25,10 +25,10 @@ public:
 
     GNUPlot();
 
-    void addWall(const std::vector<double>& a, const std::vector<double>& b, const std::vector<double>& startPoint);
-    void addRectangular(const Rectangular& rec);
-    void addPropeller(const Propeller& pro);
-    void addDrone(const Drone& drone);
+    void addWall(const std::vector<double>& a, const std::vector<double>& b, const std::vector<double>& startPoint, const std::string& color = "#FF0000");
+    void addRectangular(const Rectangular& rec, const std::string& color = "#FF0000");
+    void addPropeller(const Propeller& pro, const std::string& color = "#FF0000");
+    void addDrone(const Drone& drone, const std::string& color = "#FF0000");
     void draw();
 };
 

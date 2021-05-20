@@ -10,7 +10,7 @@ int main()
     Drone d({0, 0, 0});
     while (true)
     {
-        plot.addDrone(d);
+        plot.addDrone(d, "#FF00FF");
         plot.draw();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(50));

@@ -21,7 +21,7 @@ GNUPlot::GNUPlot() : plt(), objects(), surfaceColor("#FFFFFF00"), surfaceFormula
  * @param b second side of the wall
  * @param startPoint point where vectors start
  */
-void GNUPlot::addWall(const std::vector<double>& a, const std::vector<double>& b, const std::vector<double>& startPoint)
+void GNUPlot::addWall(const std::vector<double>& a, const std::vector<double>& b, const std::vector<double>& startPoint, const std::string& color)
 {
     using namespace VectorAction;
     std::vector<double> fig;
@@ -37,7 +37,7 @@ void GNUPlot::addWall(const std::vector<double>& a, const std::vector<double>& b
     ss << fig << " to ";
     fig = fig - b;
     ss << startPoint;
-    ss << " fillstyle transparent solid fillcolor rgb \"#FF0000\"";
+    ss << " fillstyle transparent solid fillcolor rgb \"" + color + "\"";
     objects.push_back(ss.str());
 }
 
@@ -45,16 +45,16 @@ void GNUPlot::addWall(const std::vector<double>& a, const std::vector<double>& b
  * Adding rectangular to space. \n
  * Using addWall method and VectorAction.h
  */
-void GNUPlot::addRectangular(const Rectangular& rec)
+void GNUPlot::addRectangular(const Rectangular& rec, const std::string& color)
 {
     using namespace VectorAction;
-    addWall(rec.x(), rec.y(), rec.startPoint());
-    addWall(rec.x(), rec.z(), rec.startPoint());
-    addWall(rec.y(), rec.z(), rec.startPoint());
+    addWall(rec.x(), rec.y(), rec.startPoint(), color);
+    addWall(rec.x(), rec.z(), rec.startPoint(), color);
+    addWall(rec.y(), rec.z(), rec.startPoint(), color);
     std::vector<double> newPoint = rec.startPoint() + rec.x() + rec.y() + rec.z();
-    addWall(-rec.x(), -rec.y(), newPoint);
-    addWall(-rec.x(), -rec.z(), newPoint);
-    addWall(-rec.y(), -rec.z(), newPoint);
+    addWall(-rec.x(), -rec.y(), newPoint, color);
+    addWall(-rec.x(), -rec.z(), newPoint, color);
+    addWall(-rec.y(), -rec.z(), newPoint, color);
 }
 
 /**
@@ -76,17 +76,17 @@ void GNUPlot::draw()
 }
 
 /// Adding propeller to space
-void GNUPlot::addPropeller(const Propeller& pro)
+void GNUPlot::addPropeller(const Propeller& pro, const std::string& color)
 {
     for (auto& i : pro.getRectangular())
-        addRectangular(i);
+        addRectangular(i, color);
 }
 
 /// Adding drone to space
-void GNUPlot::addDrone(const Drone& drone)
+void GNUPlot::addDrone(const Drone& drone, const std::string& color)
 {
-    addRectangular(drone.body);
-    for (auto& i : drone.propellers)
-        addPropeller(i);
+    addRectangular(drone.body, color);
+    for (auto& i : drone.getPropellers())
+        addPropeller(i, color);
 }
 
