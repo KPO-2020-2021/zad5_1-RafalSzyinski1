@@ -1,4 +1,4 @@
-#include "Drone.h"
+#include "AutoDrone.h"
 #include "GNUPlot.h"
 
 #include "thread"
@@ -7,10 +7,12 @@
 int main()
 {
     GNUPlot plot;
-    Drone d({0, 0, 0});
+    AutoDrone d;
+    d.setActive();
     while (true)
     {
         plot.addDrone(d, "#FF00FF");
+        d.fly(100, 5);
         plot.draw();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(50));

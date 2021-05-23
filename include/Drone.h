@@ -16,8 +16,8 @@ private:
 
     std::vector<double> centerPoint;
     std::vector<Propeller> propellers;
-public:
     Rectangular body;
+public:
 
     Drone() = delete;
     explicit Drone(const std::vector<double>& _centerPoint);
@@ -25,7 +25,11 @@ public:
     void spin(double angle);
     void move(const std::vector<double>& vec);
 
+    void spinPropeller(int index, double angle);
+
     const std::vector<Propeller>& getPropellers() const;
+    const std::vector<double>& getPosition() const;
+    const Rectangular& getRectangular() const;
     std::vector<double> getSize() const;
 };
 

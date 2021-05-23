@@ -36,13 +36,33 @@ void Drone::move(const std::vector<double>& vec)
         i.move(vec);
 }
 
+/// @return const vector of propellers
 const std::vector<Propeller>& Drone::getPropellers() const
 {
     return propellers;
 }
 
+/// @return vector with size in order {width, length, height}
 std::vector<double> Drone::getSize() const
 {
     return std::vector<double>({width, length, height});
+}
+
+/// Spin one propeller
+void Drone::spinPropeller(int index, double angle)
+{
+    propellers.at(index).spin(angle);
+}
+
+/// @return const vector with position
+const std::vector<double>& Drone::getPosition() const
+{
+    return centerPoint;
+}
+
+/// @return drone body
+const Rectangular& Drone::getRectangular() const
+{
+    return body;
 }
 

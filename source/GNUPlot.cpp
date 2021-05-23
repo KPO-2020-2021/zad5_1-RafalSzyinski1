@@ -65,9 +65,9 @@ void GNUPlot::draw()
 {
     plt.sendcommand("set ticslevel 0");
     plt.sendcommand("set xyplane at 0");
-    plt.sendcommand("set xrange [-30:30]");
-    plt.sendcommand("set yrange [-30:30]");
-    plt.sendcommand("set zrange [-30:30]");
+    plt.sendcommand("set xrange [-60:60]");
+    plt.sendcommand("set yrange [-60:60]");
+    plt.sendcommand("set zrange [-60:60]");
 
     for (auto& i : objects)
         plt.sendcommand(i);
@@ -85,7 +85,7 @@ void GNUPlot::addPropeller(const Propeller& pro, const std::string& color)
 /// Adding drone to space
 void GNUPlot::addDrone(const Drone& drone, const std::string& color)
 {
-    addRectangular(drone.body, color);
+    addRectangular(drone.getRectangular(), color);
     for (auto& i : drone.getPropellers())
         addPropeller(i, color);
 }
