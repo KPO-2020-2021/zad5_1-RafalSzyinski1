@@ -4,91 +4,102 @@ AutoDrone::AutoDrone(double x, double y) : Drone({x, y, DRONE_SIZE / 8.})
 {
     ang = 0.0;
     dista = 0.0;
-    flying = false;
-    ascent = false;
-    landing = false;
-    rotate = false;
-    end = true;
     altitude = 0.0;
+    state = flyingState::NONE;
 }
 
 void AutoDrone::fly(double angle, double distance)
 {
-    if (end)
-        return;
-    if (!flying && !ascent && !landing && !rotate)
+    switch (state)
     {
-        ascent = true;
-        altitude = MAX_ALTITUDE;
-    }
-    else if (ascent && (altitude > 0))
-    {
-        altitude -= SPEED;
-        move({0, 0, SPEED});
-        if (altitude <= 0)
-        {
-            ascent = false;
-            rotate = true;
-            flying = true;
-            ang = std::abs(angle);
-        }
-    }
-    else if (flying && rotate && (ang > 0))
-    {
-        ang -= SPEED;
-        spin(SPEED);
-        if (ang <= 0)
-        {
-            rotate = false;
-            dista = distance;
-        }
-    }
-    else if (flying && (dista > 0))
-    {
-        dista -= SPEED;
-        moveStraight();
-        if (dista <= 0)
-        {
-            flying = false;
-            rotate = true;
-            ang = -std::abs(angle);
-        }
-    }
-    else if (rotate && (ang < 0))
-    {
-        ang += SPEED;
-        spin(-SPEED);
-        if (ang >= 0)
-        {
-            rotate = false;
-            landing = true;
+        case flyingState::NONE:
+            state = flyingState::ASCENT;
             altitude = MAX_ALTITUDE;
-        }
-    }
-    else if (landing && (altitude > 0))
-    {
-        altitude -= SPEED;
-        move({0, 0, -SPEED});
-        if (altitude <= 0)
-        {
-            landing = false;
-            end = true;
-        }
-    }
-    else
-    {
-        end = true;
+        case flyingState::ASCENT:
+            moveUp();
+            if (altitude <= 0)
+            {
+                state = flyingState::ROTATE;
+                ang = std::abs(angle);
+            }
+            break;
+        case flyingState::ROTATE:
+            rotate();
+            if (ang <= 0)
+            {
+                state = flyingState::FLYING;
+                dista = distance;
+            }
+            break;
+        case flyingState::FLYING:
+            moveStraight();
+            if (dista <= 0)
+            {
+                state = flyingState::LANDING;
+                altitude = MAX_ALTITUDE;
+            }
+            break;
+        case flyingState::LANDING:
+            moveDown();
+            if (altitude <= 0)
+            {
+                state = flyingState::END;
+            }
+            break;
+        case flyingState::END:
+            return;
+            break;
     }
 }
 
 void AutoDrone::setActive()
 {
-    end = false;
+    state = flyingState::NONE;
 }
 
 void AutoDrone::moveStraight()
 {
+    spinPropellers();
     using namespace VectorAction;
+    dista -= SPEED;
     auto dir = getRectangular().y();
     move( (dir *  (1/abs(dir))) * SPEED);
+}
+
+void AutoDrone::moveUp()
+{
+    spinPropellers();
+    altitude -= SPEED;
+    move({0, 0, SPEED});
+}
+
+void AutoDrone::rotate()
+{
+    spinPropellers();
+    spinPropeller(0, -PROPELLERS_SPEED);
+    spinPropeller(3, PROPELLERS_SPEED);
+    ang -= SPEED;
+    spin(SPEED);
+}
+
+void AutoDrone::moveDown()
+{
+    spinPropellers();
+    altitude -= SPEED;
+    move({0, 0, -SPEED});
+}
+
+void AutoDrone::spinPropellers()
+{
+    spinPropeller(0, -PROPELLERS_SPEED);
+    spinPropeller(1, PROPELLERS_SPEED);
+    spinPropeller(2, -PROPELLERS_SPEED);
+    spinPropeller(3, PROPELLERS_SPEED);
+}
+
+bool AutoDrone::isFlying() const
+{
+    if (state == flyingState::END || state == flyingState::NONE)
+        return false;
+    return true;
 }

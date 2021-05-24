@@ -5,23 +5,26 @@
 
 #define MAX_ALTITUDE 30
 #define SPEED 0.4
+#define PROPELLERS_SPEED 10
 
 class AutoDrone : public Drone
 {
 private:
-    double ang, dista;
+    enum class flyingState {ASCENT, FLYING, LANDING, ROTATE, END, NONE};
+    double ang, dista, altitude;
 
-    bool flying, ascent, landing, rotate, end;
-    double altitude;
-
+    flyingState state;
 
 public:
     explicit AutoDrone(double x = 0, double y = 0);
     void moveUp();
     void moveStraight();
     void moveDown();
+    void rotate();
+    void spinPropellers();
     void fly(double angle, double distance);
     void setActive();
+    bool isFlying() const;
 };
 
 

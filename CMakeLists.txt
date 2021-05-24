@@ -13,6 +13,7 @@ add_subdirectory(test)
 
 file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true include/*.h source/*.cpp)
 
+set(CMAKE_CXX_FLAGS "-pthread")
 add_executable(${EXECUTABLE} ${SOURCES})
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCES})
 

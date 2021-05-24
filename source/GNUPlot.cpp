@@ -10,7 +10,7 @@
 /**
  * Default constructor
  */
-GNUPlot::GNUPlot() : plt(), objects(), surfaceColor("#FFFFFF00"), surfaceFormula("0")
+GNUPlot::GNUPlot() : plt(), objects(), surfaceColor("#000000"), surfaceFormula("0")
 {
 }
 
@@ -71,7 +71,7 @@ void GNUPlot::draw()
 
     for (auto& i : objects)
         plt.sendcommand(i);
-    plt.sendcommand("splot " + surfaceFormula +  " linecolor \"" + surfaceColor + "\" ");
+    plt.sendcommand("splot " + surfaceFormula +  " linecolor \"" + surfaceColor + "\" notitle");
     objects.clear();
 }
 
