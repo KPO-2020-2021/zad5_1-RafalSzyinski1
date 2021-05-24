@@ -37,7 +37,7 @@ void GNUPlot::addWall(const std::vector<double>& a, const std::vector<double>& b
     ss << fig << " to ";
     fig = fig - b;
     ss << startPoint;
-    ss << " fillstyle transparent solid fillcolor rgb \"" + color + "\"";
+    ss << R"( fs border lc "#000000" transparent solid fc rgb ")" + color + "\"";
     objects.push_back(ss.str());
 }
 
@@ -68,7 +68,8 @@ void GNUPlot::draw()
     plt.sendcommand("set xrange [-60:60]");
     plt.sendcommand("set yrange [-60:60]");
     plt.sendcommand("set zrange [-60:60]");
-
+    plt.sendcommand("unset border");
+    plt.sendcommand("unset tics");
     for (auto& i : objects)
         plt.sendcommand(i);
     plt.sendcommand("splot " + surfaceFormula +  " linecolor \"" + surfaceColor + "\" notitle");

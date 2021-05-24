@@ -5,7 +5,7 @@ AutoDrone::AutoDrone(double x, double y) : Drone({x, y, DRONE_SIZE / 8.})
     ang = 0.0;
     dista = 0.0;
     altitude = 0.0;
-    state = flyingState::NONE;
+    state = flyingState::END;
 }
 
 void AutoDrone::fly(double angle, double distance)
@@ -54,7 +54,8 @@ void AutoDrone::fly(double angle, double distance)
 
 void AutoDrone::setActive()
 {
-    state = flyingState::NONE;
+    if (state == flyingState::END)
+        state = flyingState::NONE;
 }
 
 void AutoDrone::moveStraight()
