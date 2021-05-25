@@ -1,3 +1,7 @@
+/**
+ * @file AutoDrone.h
+ * Declaration of AutoDrone class
+ */
 #ifndef ROTATION3D_AUTODRONE_H
 #define ROTATION3D_AUTODRONE_H
 
@@ -12,9 +16,7 @@ class AutoDrone : public Drone
 private:
     enum class flyingState {ASCENT, FLYING, LANDING, ROTATE, END, NONE};
     double ang, dista, altitude;
-
     flyingState state;
-
 public:
     explicit AutoDrone(double x = 0, double y = 0);
     void moveUp();

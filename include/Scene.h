@@ -1,3 +1,8 @@
+/**
+ * @file Scene.h
+ * Declaration of class Scene \n
+ * Class includes menu
+ */
 #ifndef ROTATION3D_SCENE_H
 #define ROTATION3D_SCENE_H
 

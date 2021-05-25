@@ -1,5 +1,12 @@
+/**
+ * @file AutoDrone.cpp
+ * Definition of AutoDrone class
+ */
+
 #include "AutoDrone.h"
 
+
+/// Single class constructor
 AutoDrone::AutoDrone(double x, double y) : Drone({x, y, DRONE_SIZE / 8.})
 {
     ang = 0.0;
@@ -8,6 +15,7 @@ AutoDrone::AutoDrone(double x, double y) : Drone({x, y, DRONE_SIZE / 8.})
     state = flyingState::END;
 }
 
+/// Fly method (made to be use in another thread)
 void AutoDrone::fly(double angle, double distance)
 {
     switch (state)
@@ -21,6 +29,7 @@ void AutoDrone::fly(double angle, double distance)
             {
                 state = flyingState::ROTATE;
                 ang = std::abs(angle);
+                ang = ang - (360 * int(ang / 360));
             }
             break;
         case flyingState::ROTATE:
@@ -52,12 +61,14 @@ void AutoDrone::fly(double angle, double distance)
     }
 }
 
+/// Set active drone
 void AutoDrone::setActive()
 {
     if (state == flyingState::END)
         state = flyingState::NONE;
 }
 
+/// Move straight drone
 void AutoDrone::moveStraight()
 {
     spinPropellers();
@@ -67,6 +78,7 @@ void AutoDrone::moveStraight()
     move( (dir *  (1/abs(dir))) * SPEED);
 }
 
+/// Move up drone to some altitude
 void AutoDrone::moveUp()
 {
     spinPropellers();
@@ -74,6 +86,7 @@ void AutoDrone::moveUp()
     move({0, 0, SPEED});
 }
 
+/// Rotate drone
 void AutoDrone::rotate()
 {
     spinPropellers();
@@ -83,6 +96,7 @@ void AutoDrone::rotate()
     spin(SPEED);
 }
 
+/// Landing
 void AutoDrone::moveDown()
 {
     spinPropellers();
@@ -90,6 +104,7 @@ void AutoDrone::moveDown()
     move({0, 0, -SPEED});
 }
 
+/// Spin propellers
 void AutoDrone::spinPropellers()
 {
     spinPropeller(0, -PROPELLERS_SPEED);
@@ -98,6 +113,7 @@ void AutoDrone::spinPropellers()
     spinPropeller(3, PROPELLERS_SPEED);
 }
 
+/// @return true if drone is not flying
 bool AutoDrone::isFlying() const
 {
     if (state == flyingState::END || state == flyingState::NONE)
