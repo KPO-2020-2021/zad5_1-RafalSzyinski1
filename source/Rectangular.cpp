@@ -9,18 +9,14 @@
 
 /// Single class constructor.
 Rectangular::Rectangular(std::vector<double>  _x, std::vector<double>  _y, std::vector<double>  _z, std::vector<double> _startPoint)
-                        : X(std::move(_x)), Y(std::move(_y)), Z(std::move(_z)), StartPoint(std::move(_startPoint))
+                        : Figure(std::move(_x), std::move(_y), std::move(_z), std::move(_startPoint))
 {
-    if (StartPoint.empty())
-        StartPoint = std::vector<double>(X.size());
-    if (X.size() != Y.size() || X.size() != Z.size() || X.size() != StartPoint.size())
-        throw std::invalid_argument("ERROR Rectangular: x.size() != y.size() || x.size() != z.size() || x.size() != startPoint.size()");
 }
 
 /// Function comparing two Rectangular. \n  Using operator== from VectorAction.h.
 bool operator==(const Rectangular& rec1, const Rectangular& rec2)
 {
-    if ((rec1.X == rec2.X) && (rec1.Y == rec2.Y) && (rec1.Z == rec2.Z) && (rec1.StartPoint == rec2.StartPoint))
+    if ((rec1.x() == rec2.x()) && (rec1.y() == rec2.y()) && (rec1.z() == rec2.z()) && (rec1.startPoint() == rec2.startPoint()))
         return true;
     return false;
 }
@@ -29,7 +25,7 @@ bool operator==(const Rectangular& rec1, const Rectangular& rec2)
 Rectangular Rectangular::operator*(const matrix<double>& mat) const
 {
     using MatrixAction::operator*;
-    Rectangular ret(mat * X, mat * Y, mat * Z, mat * StartPoint);
+    Rectangular ret(mat * x(), mat * y(), mat * z(), mat * startPoint());
     return ret;
 }
 
@@ -37,32 +33,8 @@ Rectangular Rectangular::operator*(const matrix<double>& mat) const
 Rectangular Rectangular::operator+(const std::vector<double>& vec) const
 {
     using VectorAction::operator+;
-    Rectangular ret(X, Y, Z, StartPoint + vec);
+    Rectangular ret(x(), y(), z(), startPoint() + vec);
     return ret;
-}
-
-/// @return const vector x.
-const std::vector<double>& Rectangular::x() const
-{
-    return X;
-}
-
-/// @return const vector y.
-const std::vector<double>& Rectangular::y() const
-{
-    return Y;
-}
-
-/// @return const vector z.
-const std::vector<double>& Rectangular::z() const
-{
-    return Z;
-}
-
-/// @return const vector startPoint.
-const std::vector<double>& Rectangular::startPoint() const
-{
-    return StartPoint;
 }
 
 /// @return vector with center of mass
@@ -70,7 +42,7 @@ std::vector<double> Rectangular::centerOfMass() const
 {
     using VectorAction::operator*;
     using VectorAction::operator+;
-    return (X + Y + Z) * (1.0/2.0);
+    return (x() + y() + z()) * (1.0/2.0);
 }
 
 /// Transform function helping to rotate Rectangular around center of mass in Z axis
