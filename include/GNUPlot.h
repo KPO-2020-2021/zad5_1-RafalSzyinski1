@@ -11,7 +11,7 @@
 #include <stdexcept>
 
 #include "gplot++.h"
-#include "Drone.h"
+#include "AutoDrone.h"
 
 class GNUPlot
 {
@@ -29,6 +29,7 @@ public:
     void addRectangular(const Rectangular& rec, const std::string& color = "#FF0000");
     void addPropeller(const Propeller& pro, const std::string& color = "#FF0000");
     void addDrone(const Drone& drone, const std::string& color = "#FF0000");
+    void addDronePath(const std::vector<double>& pos, const std::vector<double>& dir, double angle, double dista);
     void draw();
 };
 

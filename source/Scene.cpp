@@ -74,12 +74,26 @@ void Scene::run()
 
 void Scene::draw(std::vector<AutoDrone>& d, std::vector<std::pair<double, double>>& f, GNUPlot& p, bool& r)
 {
+    std::vector<std::pair<std::vector<double>, std::vector<double>>> path(d.size());
+    std::vector<bool> drawPath(d.size(), false);
     while(r)
     {
         for (int i = 0; i < d.size(); ++i)
         {
             d.at(i).fly(f.at(i).first, f.at(i).second);
             p.addDrone(d.at(i), "#FF0000");
+            if (drawPath.at(i))
+                p.addDronePath(path.at(i).first, path.at(i).second, f.at(i).first, f.at(i).second);
+            if (!drawPath.at(i) && d.at(i).isFlying())
+            {
+                drawPath.at(i) = true;
+                path.at(i).first = d.at(i).getPosition();
+                path.at(i).second = d.at(i).getRectangular().y();
+            }
+            if (drawPath.at(i) && !d.at(i).isFlying())
+            {
+                drawPath.at(i) = false;
+            }
         }
         p.draw();
         std::this_thread::sleep_for(std::chrono::milliseconds(50));

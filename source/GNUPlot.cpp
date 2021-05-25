@@ -4,7 +4,6 @@
  */
 
 #include "GNUPlot.h"
-
 #include "VectorAction.h"
 
 /**
@@ -89,5 +88,31 @@ void GNUPlot::addDrone(const Drone& drone, const std::string& color)
     addRectangular(drone.getRectangular(), color);
     for (auto& i : drone.getPropellers())
         addPropeller(i, color);
+}
+
+/// Adding path of drone to space
+void GNUPlot::addDronePath(const std::vector<double>& pos, const std::vector<double>& dir, double angle, double dista)
+{
+    using namespace VectorAction;
+    using namespace MatrixAction;
+    std::vector<double> fig;
+    matrix<double> m({{std::cos(M_PI/180 * angle), -std::sin(M_PI/180 * angle), 0}, {std::sin(M_PI/180 * angle), std::cos(M_PI/180 * angle), 0}, {0, 0, 1}});
+    std::stringstream ss;
+    ss << " set arrow " << objects.size() + 1 << " from ";
+    fig = pos;
+    ss << fig << " to ";
+    fig = fig + std::vector<double>({0, 0, MAX_ALTITUDE});
+    ss << fig;
+    objects.push_back(ss.str());
+    ss = std::stringstream();
+    ss << " set arrow " << objects.size() + 1 << " from " << fig << " to ";
+    fig = fig + ((m * dir) * (1/abs(dir)) * dista);
+    ss << fig;
+    objects.push_back(ss.str());
+    ss = std::stringstream();
+    ss << " set arrow " << objects.size() + 1 << " from " << fig << " to ";
+    fig = fig - std::vector<double>({0, 0, MAX_ALTITUDE});
+    ss << fig;
+    objects.push_back(ss.str());
 }
 
