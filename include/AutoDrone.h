@@ -4,7 +4,7 @@
 #include "Drone.h"
 
 #define MAX_ALTITUDE 30
-#define SPEED 1.01
+#define SPEED 1.5
 #define PROPELLERS_SPEED 10
 
 class AutoDrone : public Drone

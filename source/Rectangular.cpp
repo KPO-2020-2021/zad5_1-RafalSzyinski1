@@ -50,8 +50,8 @@ Rectangular Transform::rotateRectangularAroundCenterZ(const Rectangular& rec, do
 {
     using namespace VectorAction;
     using namespace MatrixAction;
-    matrix<double> m({{std::cos(M_PI/180 * angle), -std::sin(M_PI/180 * angle), 0}, {std::sin(M_PI/180 * angle), std::cos(M_PI/180 * angle), 0}, {0, 0, 1}});
-    Rectangular temp(rec.centerOfMass() - rec.x(), rec.centerOfMass() - rec.y(), rec.centerOfMass() - rec.z(),  -rec.centerOfMass());
+    matrix<double> m({{std::cos(M_PI/180.0 * angle), -std::sin(M_PI/180.0 * angle), 0}, {std::sin(M_PI/180.0 * angle), std::cos(M_PI/180.0 * angle), 0}, {0, 0, 1}});
+    Rectangular temp(rec.x() - rec.centerOfMass(), rec.y() - rec.centerOfMass(), rec.z() - rec.centerOfMass(),  rec.centerOfMass());
     temp = temp * m;
     return Rectangular(temp.x() + temp.startPoint() , temp.y() + temp.startPoint(), temp.z() + temp.startPoint(), (rec.centerOfMass() - temp.startPoint()) + rec.startPoint());
 }
