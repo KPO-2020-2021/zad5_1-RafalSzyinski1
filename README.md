@@ -17,22 +17,30 @@ This should generate:
 
 ## Program
 
-### VectorAction and MatrixAction
+### Doxygen and graph
 
-Program use overload operator of standard vector and matrix as two-dimensional vector.
+* I make graph to zad5_2 because this code is mess and I will rewrite this later. 
 
-### Menu
+### VectorAction 
 
-Menu is declared in main. Supports operation like rotation, translation or animation. 
+* Doesn't count vectors because I use std::vector and I can't modify the constructor and destructors. 
 
-### Tests
+### Hierarchy
 
-There are 18 tests which testing Rectangular, VectorAction and MatrixAction.
+* There are two class inherits Drone class and Figure class.
 
-### Doxygen 
+### Transforming
 
-After make project in build folder should appear doc_doxygen folder with html and latex documentation.
+* Every thing transform right.
 
-### More rectangular at once
+### Drone class
 
-Program draw 3 more figures which every rotate in other axis.
+* Can be colored on different color.
+* Have 4 propellers that can rotate in correct direction depend on rotation and flying.
+* Drone can rotate and move in straight line.
+ 
+### Scene
+
+* Draw every element in other thread so you can operate on menu and fly at the same time.
+* Draw drone path.
+* There are 4 drones that can fly at the same time.

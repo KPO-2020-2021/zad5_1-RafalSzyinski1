@@ -83,10 +83,13 @@ void Scene::draw(std::vector<AutoDrone>& d, std::vector<std::pair<double, double
     std::vector<bool> drawPath(d.size(), false);
     while(r)
     {
+        p.addDrone(d.at(0), "#FF0000");
+        p.addDrone(d.at(1), "#00FF00");
+        p.addDrone(d.at(2), "#0000FF");
+        p.addDrone(d.at(3), "#FF00FF");
         for (int i = 0; i < d.size(); ++i)
         {
             d.at(i).fly(f.at(i).first, f.at(i).second);
-            p.addDrone(d.at(i), "#FF0000");
             if (drawPath.at(i))
                 p.addDronePath(path.at(i).first, path.at(i).second, f.at(i).first, f.at(i).second);
             if (!drawPath.at(i) && d.at(i).isFlying())
